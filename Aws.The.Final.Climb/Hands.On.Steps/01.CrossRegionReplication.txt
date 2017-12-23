@@ -3,6 +3,7 @@ Create 2 Bucket:
 	prajit.gandhi.aws.important.replication.destination
 Enable Versioning In Both Bucket.
 In Management Section Of Source Bucket,Add Replication Rule.
+Change Storage Class If Needed.
 Create A Role For Replication With Following Policy.
 {
     "Version": "2012-10-17",
