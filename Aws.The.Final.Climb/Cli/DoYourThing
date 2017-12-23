@@ -1,0 +1,17 @@
+Download http://www.osboxes.org/centos/ Or https://www.osboxes.org/kali-linux/
+Username: osboxes/Password: osboxes.org Or Username: root/Password: osboxes.org
+Create New Virtual Machine,And Use An Existing Virtual Hard Disk File.
+                                Or
+Launch An Ec2 Instance For Aws Cli.
+
+1.ssh ec2-user@13.126.104.139 -i AwsCliLearnViaSsh.pem[UserName Is Wrong For Ubuntu,Giving Permission denied (publickey).]
+1.For Ubuntu Do ssh ubuntu@13.126.104.139 -i AwsCliLearnViaSsh.pem[Default User ubuntu]
+2.sudo apt-get update[Get Updated Package List For Advanced Package Tool]
+3.sudo apt-get install python-pip[Required To Install Python Packages]
+4.sudo pip install awscli[To Install AwsCli Using Pip]
+5.pip install --upgrade pip[Upgrade Pip To Latest Version]
+6.aws configure[Will Configure Cli,AWS Access Key ID [None],AWS Secret Access Key [None],Default region name [None]:ap-south-1[Mumbai],Default output format [None]:Defaulted To Json]
+7.Try aws ec2 describe-instances[Will Show Json For All Running Ec2 Instances]
+
+1.To Enable Auto Completer Use complete -C '/usr/local/bin/aws_completer' aws In Linux Instance.
+2.Use sudo pip install aws-shell[For Shell].Then Run aws-shell[Will Create Command Index]

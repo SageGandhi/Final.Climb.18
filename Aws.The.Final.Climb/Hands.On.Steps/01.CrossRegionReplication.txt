@@ -1,0 +1,33 @@
+Create 2 Bucket:
+	prajit.gandhi.aws.important.replication.source
+	prajit.gandhi.aws.important.replication.destination
+Enable Versioning In Both Bucket.
+In Management Section Of Source Bucket,Add Replication Rule.
+Create A Role For Replication With Following Policy.
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:Get*",
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::prajit.gandhi.aws.important.replication.source",
+                "arn:aws:s3:::prajit.gandhi.aws.important.replication.source/*"
+            ]
+        },
+        {
+            "Action": [
+                "s3:ReplicateObject",
+                "s3:ReplicateDelete",
+                "s3:ReplicateTags",
+                "s3:GetObjectVersionTagging"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::prajit.gandhi.aws.important.replication.destination.try/*"
+        }
+    ]
+}
+New Objects & Update To New/Old Object Will Be Replicated.
