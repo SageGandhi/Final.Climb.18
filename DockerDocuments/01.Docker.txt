@@ -37,3 +37,18 @@ PS C:\Users\Docker\Desktop\DockerDocuments> .\DockerAutoCompletionPs.ps1
 ------------------------------------------------------------------------------------------------------------------------------
 Install Kitematics For Repository & Registry Using Credential Mentioned Above.
 ------------------------------------------------------------------------------------------------------------------------------
+Only Pull Images From DockerHub:docker pull <ImageName>
+Remove Images From Docker Client:  docker rmi <ImageRepository:Tag>
+Containers Can Start/Stop/Remove From Docker Daemon Engine.
+docker rmi $(docker images -q) Removes All Images Quietly.
+Docker Image Container Run In Detached/Interactive Mode: docker run -d/-it --name WebServer01 -p 80:8080 httpd
+A Collection Of Docker Engine Joined In Cluster Is Swarm,Engine Running In Swarm Called Swarm Mode.
+Swarm Contains Manager Node[Highly Available & Assign Task To Worker Node] & Worker Node.
+One Manager Node Will Be The Primary/Leader,Raft Consensus Algorithm To Achieve Distributed Consensus.
+Docker Service Maintain No Of Replica Fault Tolerant[If One Fail,Creating A Replacement Container].
+Goto Aws,Create 3 Manager Node & 3 Worker Node[Ec2-Instances].All These Instances Must Have Docker 1.12+.
+Run Single Command wget -qO- https://get.docker.com/|sh To Install Docker.
+Git Command To Config Basic Meta Information:
+git config --global user.email "prajit.ju@gmail.com"
+git config --global user.name "Prajit Gandhi"
+
