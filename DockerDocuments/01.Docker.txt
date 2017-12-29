@@ -51,4 +51,3 @@ Run Single Command wget -qO- https://get.docker.com/|sh To Install Docker.
 Git Command To Config Basic Meta Information:
 git config --global user.email "prajit.ju@gmail.com"
 git config --global user.name "Prajit Gandhi"
-
