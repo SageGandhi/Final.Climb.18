@@ -48,6 +48,6 @@ One Manager Node Will Be The Primary/Leader,Raft Consensus Algorithm To Achieve 
 Docker Service Maintain No Of Replica Fault Tolerant[If One Fail,Creating A Replacement Container].
 Goto Aws,Create 3 Manager Node & 3 Worker Node[Ec2-Instances].All These Instances Must Have Docker 1.12+.
 Run Single Command wget -qO- https://get.docker.com/|sh To Install Docker.
-Git Command To Config Basic Meta Information:
+Git Command To Config Basic Meta Information[Required For Check In These Files In GitHub But Not Related To Docker]:
 git config --global user.email "prajit.ju@gmail.com"
 git config --global user.name "Prajit Gandhi"
