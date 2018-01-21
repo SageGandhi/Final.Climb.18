@@ -7,3 +7,5 @@
 06.https://app.pluralsight.com/library/courses/aws-certified-solutions-architect-associate/
 07.https://app.pluralsight.com/library/courses/aws-certified-solutions-architect-professional/table-of-contents
 08.https://app.pluralsight.com/library/courses/aws-certified-sysops-admin-associate/table-of-contents
+09.High Availability Of Nat Instances https://aws.amazon.com/articles/high-availability-for-amazon-vpc-nat-instances-an-example/ 
+10.Create EndPoint To Directly Access Service From Private Subnet Without Going Through Nat To Internet.Run sudo traceroute -I s3.ap-south-1.amazonaws.com To Check Difference.
