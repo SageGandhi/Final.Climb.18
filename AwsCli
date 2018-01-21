@@ -1,57 +1,3 @@
-Enable HyperVisor In Win10 Apps&Features.
-Run AppWiz.cpl In Run Command.
-Install Windows Enterprise 64 Bit VmWare Image[Windows 10 Enterprise].Enable Hyper-Visor In Control Panel->Programs&Features->Turn Windows Features On Or Off[See 01.WindowsHyperVisorEnabled.jpeg].
-Update Windows By Checking For Updates.
-Check VmWare Settings,As Shown In Document[01.SetUpDockerWindowsVmWare...02.SetUpDockerWindowsVmWare].
-Download Docker Community Edition For Windows For Docker Site.
-Once Done Command:docker version.
-Create Docker Id/Email:Get It From DockerCredential.txt
-Follow https://docs.docker.com/docker-for-windows/ Instruction:
-Copyright (C) Microsoft Corporation. All rights reserved.
----------------------------------------------------------------------------------------------------------------------------------
-PS C:\Users\Docker> docker --version -->Docker version 17.09.1-ce, build 19e2cf6
-PS C:\Users\Docker> docker-compose --version -->docker-compose version 1.17.1, build 6d101fb0
-PS C:\Users\Docker> docker-machine --version -->docker-machine.exe version 0.13.0, build 9ba6da9
----------------------------------------------------------------------------------------------------------------------------------
-PS C:\Users\Docker> docker version & PS C:\Users\Docker> docker info
----------------------------------------------------------------------------------------------------------------------------------
-PS C:\Users\Docker> docker run hello-world & 
-PS C:\Users\Docker> docker run -d -p 80:80 --name webserver nginx
-------------------------------------------------------------------------------------------------------------------------------
-PS C:\Users\Docker> docker stop webserver
-PS C:\Users\Docker> docker start webserver
-PS C:\Users\Docker> docker rm -f webserver
-PS C:\Users\Docker> docker images
-PS C:\Users\Docker> docker ps
-PS C:\Users\Docker> docker rmi nginx
-PS C:\Users\Docker> docker rmi -f hello-world
-PS C:\Users\Docker> docker rmi -f ubuntu
-------------------------------------------------------------------------------------------------------------------------------
-Tab Completion For Docker In PowerShell:
-PowerShell Run As Administrator,Then Run Following Commands:
-PS C:\Windows\system32> Set-ExecutionPolicy RemoteSigned
-PS C:\Windows\system32> Install-Module posh-docker
-For Current User Only:PS C:\Windows\system32> Install-Module -Scope CurrentUser posh-docker
-Execute DockerAutoCompletionPs.ps1 
-PS C:\Users\Docker\Desktop\DockerDocuments> .\DockerAutoCompletionPs.ps1
-------------------------------------------------------------------------------------------------------------------------------
-Install Kitematics For Repository & Registry Using Credential Mentioned Above.
-------------------------------------------------------------------------------------------------------------------------------
-Only Pull Images From DockerHub:docker pull <ImageName>
-Remove Images From Docker Client:  docker rmi <ImageRepository:Tag>
-Containers Can Start/Stop/Remove From Docker Daemon Engine.
-docker rmi $(docker images -q) Removes All Images Quietly.
-Docker Image Container Run In Detached/Interactive Mode: docker run -d/-it --name WebServer01 -p 80:8080 httpd
-A Collection Of Docker Engine Joined In Cluster Is Swarm,Engine Running In Swarm Called Swarm Mode.
-Swarm Contains Manager Node[Highly Available & Assign Task To Worker Node] & Worker Node.
-One Manager Node Will Be The Primary/Leader,Raft Consensus Algorithm To Achieve Distributed Consensus.
-Docker Service Maintain No Of Replica Fault Tolerant[If One Fail,Creating A Replacement Container].
-Goto Aws,Create 3 Manager Node & 3 Worker Node[Ec2-Instances].All These Instances Must Have Docker 1.12+.
-Run Single Command wget -qO- https://get.docker.com/|sh To Install Docker.
-Git Command To Config Basic Meta Information:
-git config --global user.email "prajit.ju@gmail.com"
-git config --global user.name "Prajit Gandhi"
-
 -------------------------------------------Steps To Install Docker In Aws Ec2 Instance------------------------------------------------
 chmod 400 <Private Key>: chmod 400 DockerSwarm.pem
 ssh -i <Private Key> <User>@<Fully Qualified Name>:ssh -i DockerSwarmMumbai.pem ec2-user@ec2-13-126-221-221.ap-south-1.compute.amazonaws.com
@@ -164,7 +110,7 @@ Run Nginx Container:
             Create NetWork:docker network create --driver bridge --subnet 10.0.0.1/24 Bridge01 
             Install Bridge-Utils For Linux:sudo apt-get install bridge-utils
                 Then Use brctl --help & brctl show & ip link show
-        Install 2 Container & Communucate:
+        Install 2 Container & Communicate:
             docker run --interactive --tty --name Alpine01 --network Bridge01 --detach alpine
             docker run --interactive --tty --name Alpine02 --network Bridge01 --detach alpine
             docker network inspect Bridge01 
@@ -176,7 +122,43 @@ Run Nginx Container:
             docker container ls & docker container rm -f 4ebd96b02929 57d84aaa097f 72b7deeced6c
             docker container exec --interactive --tty Alpine02 sh
         MultiHost Network:
-            Create An Instance & Install Docker.
+            Create An Instance & Install Docker.Restart Machine Using sudo shutdown -r now.
+            Create Security Group For Udp:2789/Tcp:Udp:7946/Tcp:2377[Swarm].
             Create Swarm Manager:docker swarm init & Add Second Node As Worker
             docker swarm join --token SWMTKN-1-3vudwu3xk32escbnv8iir46577uob93gz6srfssy3ibpzxk8jd-35x52hvmdn8gznbvolvsnpzoz 172.31.5.98:2377
-            To Get Above Command Again Use docker swarm join-token manager
+            To Get Above Command Again Use docker swarm join-token manager/worker
+            Get All Node In Swarm & All Network Created For This Swarm In Manager & Worker:docker node ls & docker network ls
+            Ingress Mean Incoming Traffic Towards Interface[In] & Egress Means Exiting Traffic From An Interface[Exit].
+            docker network create --driver overlay OverLayBridge01
+            Docker Lazy Approach To Create Network Until It Used By Any Container In That Docker Host.
+            Use docker network ls To See Network Just Created In Worker Node But Not Used By Any Container Will Not Be Displayed.
+            Create A Service With 2 Alpine Replicas:
+            docker service create --name ServiceWith2Replicas --network OverLayBridge01 --replicas 2  alpine sleep 1d 
+            To List Down Container That Is Running Use:docker service ps ServiceWith2Replicas 
+            Remove All Container Along With Service:docker service rm ServiceWith2Replicas
+            docker network inspect OverLayBridge01 Will Show Containers Name:
+                ServiceWith2Replicas.1.45o7mvyigt8u25huon8mr0rlg/ServiceWith2Replicas.2.hzz85rfchm9nq6wj0p2t7de2h
+            Now Ping One From The Other:docker exec --interactive --tty ServiceWith2Replicas.1.45o7mvyigt8u25huon8mr0rlg sh & 
+                ping ServiceWith2Replicas.2.hzz85rfchm9nq6wj0p2t7de2h
+        MacVlan Driver:
+            For New SingleHost/MultiHost Docker We Can Use Bridge/Overlay Driver.To Re-Use Existing Network & Vlan,Configure It To 
+            Transition To Docker Environment MacVlan Is Used.Vlan Must Be In Promiscuous Mode.Provides Ip/Mac For Each Container.
+        IpVlan Driver:
+            Same As MacVlan Driver But Provide Common Mac Across All Container.
+=========================================================================================================================================
+Created A User With [Access][Secret][Region]:[AKIAI2MISX4YA5THESLQ][xQeK05jB57sIYXeM9AqMXRyurXVGQS4PZR93a+/U][ap-south-1]
+Security Access Key For MultiFactored Authentication:3UMMSK4MQGIKCKPQ5B5LXVZMJRTN6DTLZ4HWX7XKKFB2HRDT6YNIITWJS4QBI5LO
+=========================================================================================================================================
+ssh -i "DockerSwarmMumbai.pem" ec2-user@ec2-13-126-216-122.ap-south-1.compute.amazonaws.com
+ssh -i "DockerSwarmMumbai.pem" ubuntu@ec2-52-66-43-158.ap-south-1.compute.amazonaws.com
+Aws Cli In Ubuntu:sudo apt-get update To Get UptoDate Package List.
+Install Pip For Installing AwsCli:sudo apt-get install python-pip
+Upgrading Pip To Latest: sudo pip install --upgrade pip
+To Install AwsCli Use: sudo pip install awscli/pip install awscli --upgrade --user[Install In User Directory,Need Path Setup:export PATH=/home/ubuntu/.local/bin:$PATH] 
+Change UTF-8 Locale:export LANGUAGE=en_US.UTF-8 & export LANG=en_US.UTF-8 & export LC_ALL=en_US.UTF-8
+aws --version[Once Installed To Verify].Uninstall AwsCli:[sudo]pip uninstall awscli.If Installed In User Directory Sudo Not Needed.
+Configure Aws Shell :aws configure --profile AwsCliUser.Change Directory cd /home/ubuntu/.aws/.Check These 2 File Using Nano:nano config/nano credentials
+If Sudo Used Then These Directory Will Be In /.aws/[ShortCut ~/.aws].Other Override Option --region & --output.
+Ex. aws ec2  describe-instances --region ap-south-1 --output table --profile AwsCliUser
+Enable AutoComplete:complete -c '/usr/local/bin/aws_completer' aws.Better Use aws-shell[sudo pip install aws-shell].Run aws-shell.
+Try ec2 describe-regions/ec2 describe-instances --instance-ids <id>.        
